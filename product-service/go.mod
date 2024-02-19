@@ -1,4 +1,4 @@
-module product-service
+module github.com/mhope-2/go-services/product-service
 
 go 1.21.0
 

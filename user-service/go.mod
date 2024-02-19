@@ -1,4 +1,4 @@
-module user-service
+module github.com/mhope-2/go-services/user-service
 
 go 1.21.0
 
