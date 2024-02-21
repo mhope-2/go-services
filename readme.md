@@ -1,3 +1,7 @@
 # GO SERVICES
 
 # WIP
+
+# ADD TESTS
+
+# ADD LOGGER

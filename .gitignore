@@ -115,6 +115,8 @@ fabric.properties
 
 # ENV
 *.env
+./user-service/.env
+./product-service/.env
 ./order-service/.env
 
 # End of https://www.toptal.com/developers/gitignore/api/goland+all,go

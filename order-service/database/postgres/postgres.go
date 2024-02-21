@@ -2,10 +2,10 @@ package postgres
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
-
 	"gorm.io/gorm"
 )
 
@@ -31,8 +31,8 @@ func New(config *Config) (*gorm.DB, error) {
 	)
 
 	dsn := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		config.Host, config.Port, config.User, config.Password, config.DBName, config.SSLMode,
+		"host=%s port=%s user=%s password=%s dbname=%s",
+		config.Host, config.Port, config.User, config.Password, config.DBName,
 	)
 
 	if os.Getenv("ENV") == "staging" || os.Getenv("ENV") == "production" {
@@ -42,6 +42,7 @@ func New(config *Config) (*gorm.DB, error) {
 	}
 
 	if err != nil {
+		log.Fatalf("Failed to connect to db: %v", err)
 		return nil, err
 	}
 
