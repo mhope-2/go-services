@@ -5,21 +5,18 @@ services:
     build:
       context: ./user-service
       dockerfile: Dockerfile
-#      args:
-#        PORT: 8081
     container_name: user-service
     ports:
       - "8081:8081"
     networks:
       - go-net
-    env_file: ./user-service/.env
+    env_file:
+      - ./user-service/.env
 
   product-service:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    #      args:
-#        PORT: 8082
     container_name: product-service
     ports:
       - "8082:8082"
@@ -31,8 +28,6 @@ services:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-#      args:
-#        PORT: ${PORT}
     container_name: order-service
     ports:
       - "8083:8083"
@@ -41,6 +36,7 @@ services:
     env_file: ./order-service/.env
     depends_on:
       - postgres
+      - rabbitmq
 
   postgres:
     image: "postgres:13.1"
@@ -53,6 +49,18 @@ services:
       - POSTGRES_USER=postgres
     ports:
       - "5433:5432"
+    networks:
+      - go-net
+
+  rabbitmq:
+    image: rabbitmq:3.7.15-management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=order
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - go-net
 

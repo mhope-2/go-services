@@ -18,5 +18,6 @@ start:
 stop:
 	docker-compose stop
 
-test:
-	go test -v -cover ./...
+#test:
+#   manually cd into module and run:
+#	go test -v -cover ./...

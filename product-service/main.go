@@ -32,7 +32,7 @@ func GetProduct(c *gin.Context) {
 	switch code {
 
 	case "product1":
-		time.Sleep(300 * time.Millisecond) // Simulate some processing delay
+		time.Sleep(200 * time.Millisecond) // Simulate some processing delay
 
 		c.JSON(http.StatusOK, Product{
 			Code:  "product1",
@@ -50,6 +50,7 @@ func GetProduct(c *gin.Context) {
 		})
 
 	case "product3":
+		time.Sleep(200 * time.Millisecond)
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Internal Server Error"})
 	}
 }
