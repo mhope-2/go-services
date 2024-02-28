@@ -11,7 +11,7 @@ import (
 func TestFetchProduct(t *testing.T) {
 	// Set up a mock HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Example user data to return in the mock response
+		// example product data to return in the mock response
 		mockProduct := Product{
 			Code:  "product1",
 			Name:  "Product 1",
@@ -32,13 +32,13 @@ func TestFetchProduct(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// mock user service url
+	// mock product service url
 	err := os.Setenv("PRODUCT_SERVICE_URL", server.URL)
 	if err != nil {
 		return
 	}
 
-	// Call FetchUserDetails
+	// Call FetchProduct
 	product, err := FetchProduct("product1")
 	if err != nil {
 		t.Fatalf("FetchUser returned an error: %v", err)

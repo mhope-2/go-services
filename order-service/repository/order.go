@@ -106,10 +106,16 @@ func (r *Repository) CreateOrder(ctx context.Context, data shared.CreateOrderReq
 		},
 	}
 
-	rabbitmq.Publish(message, "order_queue", "created_order", "orders")
+	// create RabbitMQ connection and publish message
+	config := shared.NewEnvConfig()
+	p, err := rabbitmq.NewPublisher(config.AmqpURI)
+
+	err = p.Publish(message, "order_queue", "created_order", "orders")
+	if err != nil {
+		return nil, err
+	}
 
 	return &order, nil
-
 }
 
 func (r *Repository) RetrieveOrder(id string) (*models.Order, error) {

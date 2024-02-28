@@ -10,32 +10,23 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
+type Publisher struct {
+	conn *amqp.Connection
 }
 
-func Publish(message shared.Message, queueName, routingKey, exchange string) {
-	config := shared.NewEnvConfig()
+func NewPublisher(amqpURI string) (*Publisher, error) {
+	conn, err := amqp.Dial(amqpURI)
+	if err != nil {
+		return nil, err
+	}
+	return &Publisher{conn: conn}, nil
+}
 
-	// Connect to RabbitMQ server
-	conn, err := amqp.Dial(config.AmqpURI)
-	failOnError(err, "Failed to connect to RabbitMQ")
-	defer func() {
-		if err = conn.Close(); err != nil {
-			failOnError(err, "Failed to close RabbitMQ connection")
-		}
-	}()
+func (p *Publisher) Publish(message shared.Message, queueName, routingKey, exchange string) error {
 
 	// Create a channel
-	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel")
-	defer func() {
-		if err = ch.Close(); err != nil {
-			failOnError(err, "Failed to close RabbitMQ channel")
-		}
-	}()
+	ch, err := p.conn.Channel()
+	defer ch.Close()
 
 	// Declare an exchange
 	err = ch.ExchangeDeclare(
@@ -47,7 +38,9 @@ func Publish(message shared.Message, queueName, routingKey, exchange string) {
 		false,    // no-wait
 		nil,      // arguments
 	)
-	failOnError(err, "Failed to declare an exchange")
+	if err != nil {
+		return err
+	}
 
 	// Declare a queue
 	_, err = ch.QueueDeclare(
@@ -58,11 +51,16 @@ func Publish(message shared.Message, queueName, routingKey, exchange string) {
 		false,     // no-wait
 		nil,       // arguments
 	)
-	failOnError(err, "Failed to declare a queue")
+	if err != nil {
+		return err
+	}
 
 	// Serialize the instance to JSON
 	body, err := json.Marshal(message)
-	failOnError(err, "Failed to serialize message")
+	if err != nil {
+		log.Println("Failed to serialize message")
+		return err
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -77,7 +75,11 @@ func Publish(message shared.Message, queueName, routingKey, exchange string) {
 			ContentType: "application/json",
 			Body:        body,
 		})
-	failOnError(err, "Failed to publish a message")
+	if err != nil {
+		log.Println("Failed to publish a message")
+		return err
+	}
 
 	log.Printf(" [x] Sent,  msg=%s, exchange=%s, queue=%s", body, exchange, queueName)
+	return nil
 }
