@@ -3,7 +3,6 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
@@ -13,12 +12,6 @@ import (
 
 func TestMain(m *testing.M) {
 	gin.SetMode(gin.TestMode)
-
-	err := os.Setenv("ENV", "testing")
-	if err != nil {
-		fmt.Println("Error setting env variable, ENV")
-		return
-	}
 
 	os.Exit(m.Run())
 }

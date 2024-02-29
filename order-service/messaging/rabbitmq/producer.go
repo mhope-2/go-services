@@ -17,6 +17,7 @@ type Publisher struct {
 func NewPublisher(amqpURI string) (*Publisher, error) {
 	conn, err := amqp.Dial(amqpURI)
 	if err != nil {
+		log.Println("Error creating amqp connection")
 		return nil, err
 	}
 	return &Publisher{conn: conn}, nil

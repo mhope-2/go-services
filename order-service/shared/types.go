@@ -21,7 +21,3 @@ type Message struct {
 	Type     string           `json:"type"`
 	Payload  map[string]Order `json:"payload"`
 }
-
-//type Publisher interface {
-//	Publish(message Message, queueName string, routingKey string, exchange string)
-//}
