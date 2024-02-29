@@ -36,7 +36,7 @@ func (r *Repository) CreateOrder(ctx context.Context, data shared.CreateOrderReq
 	errorChan := make(chan error, 2)
 
 	go func() {
-		user, err := client.FetchUser(data.UserID)
+		user, err := r.UserService.FetchUser(data.UserID) //client.FetchUser(data.UserID)
 		if err != nil {
 			errorChan <- fmt.Errorf("failed to fetch user details: %w", err)
 			return
@@ -45,7 +45,7 @@ func (r *Repository) CreateOrder(ctx context.Context, data shared.CreateOrderReq
 	}()
 
 	go func() {
-		product, err := client.FetchProduct(data.ProductCode)
+		product, err := r.ProductService.FetchProduct(data.ProductCode)
 		if err != nil {
 			errorChan <- fmt.Errorf("failed to fetch product details: %w", err)
 			return

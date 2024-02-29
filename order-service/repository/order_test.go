@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/mhope-2/go-services/order-service/client"
 	"github.com/mhope-2/go-services/order-service/database/postgres"
 	"github.com/mhope-2/go-services/order-service/messaging/rabbitmq"
 	"github.com/mhope-2/go-services/order-service/shared"
@@ -20,6 +21,17 @@ func TestMain(m *testing.M) {
 	os.Setenv("AMQP_URI", "amqp://user:order@localhost:5672/")
 
 	os.Exit(m.Run())
+}
+
+type MockUserService struct{}
+type MockProductService struct{}
+
+func (m *MockUserService) FetchUser(userID string) (*client.User, error) {
+	return &client.User{ID: userID, FirstName: "John", LastName: "Doe"}, nil
+}
+
+func (m *MockProductService) FetchProduct(productCode string) (*client.Product, error) {
+	return &client.Product{Code: productCode, Name: "Product 1", Price: 9.99}, nil
 }
 
 func TestOrderRepository(t *testing.T) {
@@ -41,7 +53,10 @@ func crud(t *testing.T) {
 		log.Fatal("failed To Connect To Postgresql database", db, err)
 	}
 
-	repo := New(db)
+	userService := &MockUserService{}
+	productService := &MockProductService{}
+	repo := New(db, userService, productService)
+
 	_, err = rabbitmq.NewPublisher("amqp://user:order@localhost:5672/")
 	if err != nil {
 		fmt.Println("failed to create amqp connection")

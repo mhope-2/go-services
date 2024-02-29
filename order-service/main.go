@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/mhope-2/go-services/order-service/client"
 	"log"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -36,7 +37,7 @@ func main() {
 	log.Println("DB migration completed")
 
 	s := server.New()
-	h := handler.New(db)
+	h := handler.New(db, &client.HTTPUserService{}, &client.HTTProductService{})
 
 	routes := s.Group("")
 	h.Register(routes)

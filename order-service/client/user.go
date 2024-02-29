@@ -18,8 +18,14 @@ type User struct {
 	LastName  string `json:"last_name"`
 }
 
+type UserService interface {
+	FetchUser(userID string) (*User, error)
+}
+
+type HTTPUserService struct{}
+
 // FetchUser asynchronously makes a request to the user service and returns the user object with retry mechanism
-func FetchUser(userID string) (*User, error) {
+func (s *HTTPUserService) FetchUser(userID string) (*User, error) {
 	config := shared.NewEnvConfig()
 
 	url := fmt.Sprintf("%s/%s", config.UserServiceURL, userID)

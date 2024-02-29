@@ -19,8 +19,14 @@ type Product struct {
 	Price float64 `json:"price"`
 }
 
+type ProductService interface {
+	FetchProduct(productCode string) (*Product, error)
+}
+
+type HTTProductService struct{}
+
 // FetchProduct asynchronously makes a request to the product details service and returns the product details
-func FetchProduct(code string) (*Product, error) {
+func (s *HTTProductService) FetchProduct(code string) (*Product, error) {
 	config := shared.NewEnvConfig()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
