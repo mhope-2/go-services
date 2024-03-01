@@ -1,3 +1,4 @@
+// Package models maintains the service table fields definition
 package models
 
 import (

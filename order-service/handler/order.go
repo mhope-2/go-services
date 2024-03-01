@@ -66,5 +66,4 @@ func (h *Handler) RetrieveOrder(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, order)
-	return
 }

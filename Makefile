@@ -18,6 +18,11 @@ start:
 stop:
 	docker-compose stop
 
+lint:
+	CGO_ENABLED=0 go vet ./...
+	staticcheck -checks=all ./...
+
+
 #test:
 #   manually cd into module and run:
 #	go test -v -cover ./...

@@ -1,3 +1,4 @@
+// Package repository maintains the data access components
 package repository
 
 import (

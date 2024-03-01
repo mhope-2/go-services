@@ -1,3 +1,4 @@
+// Package shared maintains the group of shared types and configs
 package shared
 
 import (
@@ -14,7 +15,7 @@ type EnvConfig struct {
 	Port              string
 	DBurl             string
 	ServerPort        string
-	AmqpURI           string
+	AMQPURI           string
 	UserServiceURL    string
 	ProductServiceURL string
 }
@@ -30,7 +31,7 @@ func NewEnvConfig() *EnvConfig {
 		Port:              os.Getenv("DB_PORT"),
 		DBurl:             os.Getenv("DB_URL"),
 		ServerPort:        os.Getenv("PORT"),
-		AmqpURI:           os.Getenv("AMQP_URI"),
+		AMQPURI:           os.Getenv("AMQP_URI"),
 		UserServiceURL:    os.Getenv("USER_SERVICE_URL"),
 		ProductServiceURL: os.Getenv("PRODUCT_SERVICE_URL"),
 	}

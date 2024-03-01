@@ -1,3 +1,4 @@
+// Package server maintains server components
 package server
 
 import (

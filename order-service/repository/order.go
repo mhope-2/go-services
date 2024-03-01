@@ -108,7 +108,10 @@ func (r *Repository) CreateOrder(ctx context.Context, data shared.CreateOrderReq
 
 	// create RabbitMQ connection and publish message
 	config := shared.NewEnvConfig()
-	p, err := rabbitmq.NewPublisher(config.AmqpURI)
+	p, err := rabbitmq.NewPublisher(config.AMQPURI)
+	if err != nil {
+		return &order, err
+	}
 
 	err = p.Publish(message, "order_queue", "created_order", "orders")
 	if err != nil {

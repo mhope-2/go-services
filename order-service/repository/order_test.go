@@ -77,14 +77,14 @@ func crud(t *testing.T) {
 	assert.Equal(t, order.ProductCode, data.ProductCode)
 
 	// ------------------------------------------------------------------------
-
-	//// test repo url retrieve
-	//url, err = repo.GetUrl("A1B2C3D4", "127.0.0.1")
+	//TODO: RETRIEVE
+	//order, err = repo.RetrieveOrder(ctx, data)
+	//
 	//if err != nil {
-	//	t.Fatalf("Error retrieving url: %v", err)
+	//	t.Fatalf("Error creating url: %v", err)
 	//}
 	//
-	//assert.NoError(t, err, "Failed to retrieve url")
-	//assert.Equal(t, url.Url, "https://youtube.com/")
-	//assert.Equal(t, url.Slug, "A1B2C3D4")
+	//assert.NoError(t, err, "Failed to create order")
+	//assert.Equal(t, order.UserID, data.UserID)
+	//assert.Equal(t, order.ProductCode, data.ProductCode)
 }

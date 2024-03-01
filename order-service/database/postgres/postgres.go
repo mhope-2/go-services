@@ -1,3 +1,4 @@
+// Package postgres maintains postgres-specific code
 package postgres
 
 import (

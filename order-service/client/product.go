@@ -1,3 +1,4 @@
+// Package client maintains code for making requests to client services
 package client
 
 import (

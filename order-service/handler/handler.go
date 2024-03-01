@@ -1,3 +1,4 @@
+// Package handler maintains API components
 package handler
 
 import (

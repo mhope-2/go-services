@@ -1,3 +1,4 @@
+// Package rabbitmq maintains code for rabbitmq
 package rabbitmq
 
 import (
@@ -27,6 +28,10 @@ func (p *Publisher) Publish(message shared.Message, queueName, routingKey, excha
 
 	// Create a channel
 	ch, err := p.conn.Channel()
+	if err != nil {
+		return err
+	}
+
 	defer ch.Close()
 
 	// Declare an exchange
