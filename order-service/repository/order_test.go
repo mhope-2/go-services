@@ -62,29 +62,22 @@ func crud(t *testing.T) {
 		fmt.Println("failed to create amqp connection")
 	}
 
+	// create order test
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	data := shared.CreateOrderRequest{UserID: "7c11e1ce2741", ProductCode: "product1"}
 	order, err := repo.CreateOrder(ctx, data)
 
-	if err != nil {
-		t.Fatalf("Error creating url: %v", err)
-	}
-
 	assert.NoError(t, err, "Failed to create order")
 	assert.Equal(t, order.UserID, data.UserID)
 	assert.Equal(t, order.ProductCode, data.ProductCode)
 
 	// ------------------------------------------------------------------------
-	//TODO: RETRIEVE
-	//order, err = repo.RetrieveOrder(ctx, data)
-	//
-	//if err != nil {
-	//	t.Fatalf("Error creating url: %v", err)
-	//}
-	//
-	//assert.NoError(t, err, "Failed to create order")
-	//assert.Equal(t, order.UserID, data.UserID)
-	//assert.Equal(t, order.ProductCode, data.ProductCode)
+	// retrieve order test
+	order1, err := repo.RetrieveOrder(order.ID)
+
+	assert.NoError(t, err, "Failed to retrieve order")
+	assert.NotNil(t, order1)
+	assert.Equal(t, order1.ID, order.ID)
 }
