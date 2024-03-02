@@ -15,8 +15,8 @@ type Publisher struct {
 	conn *amqp.Connection
 }
 
-func NewPublisher(amqpURI string) (*Publisher, error) {
-	conn, err := amqp.Dial(amqpURI)
+func NewPublisher(s *shared.EnvConfig) (*Publisher, error) {
+	conn, err := amqp.Dial(s.AMQPURI)
 	if err != nil {
 		log.Println("Error creating amqp connection")
 		return nil, err

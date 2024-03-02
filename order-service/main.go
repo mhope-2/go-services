@@ -36,6 +36,8 @@ func main() {
 	}
 	log.Println("DB migration completed")
 
+	//config := shared.NewEnvConfig()
+
 	s := server.New()
 	h := handler.New(db, &client.HTTPUserService{}, &client.HTTProductService{})
 
